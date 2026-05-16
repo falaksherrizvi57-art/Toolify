@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - Toolify</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        .qr-input-group {
+            margin-bottom: 1.5rem;
+        }
+        #qrcode {
+            margin-top: 2rem;
+            text-align: center;
+            padding: 1rem;
+        }
+        .qr-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        #downloadBtn {
+            display: none;
+            background: #4CAF50;
+        }
+        #downloadBtn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="tool-container">
+        <a href="index.html" class="back-btn">← Back to Tools</a>
+        <h1>📱 QR Code Generator</h1>
+        <p>Enter any text or URL to generate a QR code instantly.</p>
+        
+        <div class="qr-input-group">
+            <textarea id="qrText" rows="4" placeholder="Enter text, URL, or any data...">https://falaksherrizvi57-art.github.io/Toolify/</textarea>
+        </div>
+        
+        <button onclick="generateQR()">Generate QR Code</button>
+        <button id="downloadBtn" onclick="downloadQR()">Download QR Code</button>
+        
+        <div id="qrcode"></div>
+    </div>
+
+    <script>
+        let qrCodeInstance = null;
+        
+        function generateQR() {
+            const text = document.getElementById('qrText').value;
+            if (!text) {
+                alert('Please enter some text or URL');
+                return;
+            }
+            
+            document.getElementById('qrcode').innerHTML = '';
+            
+            qrCodeInstance = new QRCode(document.getElementById('qrcode'), {
+                text: text,
+                width: 256,
+                height: 256,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+        }
+        
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = 'qr-code.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+        }
+        
+        // Generate QR on page load
+        window.onload = function() {
+            generateQR();
+        };
+    </script>
+</body>
+</html>
